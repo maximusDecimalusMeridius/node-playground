@@ -20,13 +20,13 @@ for (let i = 0; i < numberArray.length; i++) {
 // assigning that value to the current array index.
 numberArray.forEach( (slot, index, array) => {
     
-    let alreadyPicked = false;
+    let pickedOne = false;
     
-    while (alreadyPicked === false){
+    while (pickedOne === false){
         var num = Math.ceil(Math.random() * range);
         numCheck.forEach((nums, index, array) => {
             if(nums === num){
-                alreadyPicked = true;
+                pickedOne = true;
                 array.splice(index, 1);
             }
         })

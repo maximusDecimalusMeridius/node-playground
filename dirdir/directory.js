@@ -113,7 +113,7 @@ function runIt(){
                 showAll();
                 break;
 
-            case("Quit"):
+            case("quit"):
                 goodbye();
                 break;
                 

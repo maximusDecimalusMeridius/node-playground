@@ -178,6 +178,7 @@ function addIt(){
     
 }
 
+//User query based on the property the user wants to search
 function findIt() {
     inquirer.prompt(
         [{
@@ -193,16 +194,35 @@ function findIt() {
         
         switch(answer.searchChoice){
             
+            case("id"):
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        message: "Enter your friend's ID",
+                        name: "searchQuery"
+                    }
+                ])
+                .then( answer => {
+                    //Return true if no friend.id exists with the queried ID and display a message to the user
+                    //otherwise display the record with the ID supplied
+                    if(friendsArray.every( friend => friend.id != answer.searchQuery)){
+                        console.log("No such ID");
+                    } else {
+                        displayArray( friendsArray.filter( friendName => friendName.id == answer.searchQuery ) );
+                    }
+                })
+                break;
+
             case("name"):
                 inquirer.prompt([
                     {
                         type: "input",
                         message: "Enter your friend's name",
-                        name: "nameQuery"
+                        name: "searchQuery"
                     }
                 ])
                 .then( answer => {
-                    displayArray(friendsArray.filter( friendName => friendName.name.includes(answer.nameQuery.trim())));
+                    displayArray( friendsArray.filter( friendName => friendName.name.includes( answer.searchQuery.trim() ) ) );
                 })
                 break;
         }

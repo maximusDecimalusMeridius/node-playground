@@ -223,9 +223,14 @@ function findIt() {
                     }
                 ])
                 .then( answer => {
+                    
+                    if(friendsArray.every( friend => friend.name != answer.searchQuery)){
+                        console.log(`No friend named ${answer.searchQuery}!`);
+                    } else {
                     displayArray( friendsArray.filter( friend => friend.name.includes( answer.searchQuery.trim() ) ) );
+                    }
                 })
-                .then( () => runAgain())
+                .then(() => runAgain())
                 break;
         }
 

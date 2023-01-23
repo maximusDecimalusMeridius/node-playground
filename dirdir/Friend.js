@@ -17,6 +17,10 @@ class Friend {
         this.name = name;
     }
 
+    getID() {
+        return this.id;
+    }
+
     getName() {
         return this.name;
     }

@@ -208,9 +208,10 @@ function findIt() {
                     if(friendsArray.every( friend => friend.id != answer.searchQuery)){
                         console.log("No such ID");
                     } else {
-                        displayArray( friendsArray.filter( friendName => friendName.id == answer.searchQuery ) );
+                        displayArray( friendsArray.filter( friend => friend.id == answer.searchQuery ) );
                     }
                 })
+                .then( () => runAgain())
                 break;
 
             case("name"):
@@ -222,12 +223,13 @@ function findIt() {
                     }
                 ])
                 .then( answer => {
-                    displayArray( friendsArray.filter( friendName => friendName.name.includes( answer.searchQuery.trim() ) ) );
+                    displayArray( friendsArray.filter( friend => friend.name.includes( answer.searchQuery.trim() ) ) );
                 })
+                .then( () => runAgain())
                 break;
         }
-    })
 
+    })
 }
 
 function updateIt() {

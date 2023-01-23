@@ -1,12 +1,23 @@
 const inquirer = require("inquirer");
 const fs = require("fs");
 const Friend = require("./Friend.js");
+const { DiffieHellmanGroup } = require("crypto");
 const firstRun = true;
 
 let friendsArray = [];
 
 //Get user input from the command line and act accordingly
 // [Options] Create a new friend, Search for a friend, Delete a friend
+
+function hello() {
+    console.log(
+        `
+        *********************************
+        *      Welcome to Friendly      *
+        *********************************
+                     
+        `);
+}
 
 function goodbye() {
     console.log("goodbye!");
@@ -19,19 +30,33 @@ function loadFriendsList() {
     });  
 }
 
-//Parses json array
+//Parses json objects from fileRead in friendsArray and opens it for manipulation
 function openArray(){
     for(let i = 0; i < friendsArray.length; i++){
         friendsArray[i] = JSON.parse(friendsArray[i]);
     }
 }
 
+//Displays the array passed in a "friend card" for all objects in the array that are passed
+function displayArray(array) {
+    array.forEach( element => {
+        console.log(`Friend: ID - ${element.id}
+        ${element.name}(${element.dateOfBirth})
+        Married: ${element.married}, Kids: ${element.kids}
+        Phone: ${element.phoneNumber}
+        Address: ${element.address}
+        `);
+    })
+}
+
+//Stringifies and "closes" objects in the array before writing to friends.json
 function closeArray(){
     for(let i = 0; i < friendsArray.length; i++){
         friendsArray[i] = JSON.stringify(friendsArray[i]);
     }
 }
 
+//Prompt user to see if they want to run again - if yes, main menu, otherwise goodbye()
 function runAgain(){
     inquirer.prompt(
         [{
@@ -43,26 +68,14 @@ function runAgain(){
 }
 
 function showAll(){
-    friendsArray.forEach( element => {
-        console.log(`
-        Friend: ${element.name}(${element.dateOfBirth})
-        Married: ${element.married}, Kids: ${element.kids}
-        Phone: ${element.phoneNumber}
-        Address: ${element.address}`);
-    })
+    displayArray(friendsArray);
+    runAgain();
 }
 
 function runIt(){
     
     loadFriendsList();
-    console.log(
-    `
-    *********************************
-    *      Welcome to Friendly      *
-    *********************************
-                 
-    `);
-
+    
     inquirer.prompt([
         {
             type: 'list',
@@ -111,6 +124,10 @@ function runIt(){
     })
 }
 
+
+//Create and add a new Friend object
+//Queries user for name, birthday, relationship status, kids, address, and phone number
+//After entry, adds to the friends.json file and calls runAgain() asking the user if they want to run it again
 function addIt(){
     inquirer.prompt([
         {
@@ -150,7 +167,8 @@ function addIt(){
         }
     ])
     .then( (answers) => {
-        const friend = new Friend(`${answers.firstName.trim()} ${answers.lastName.trim()}`.trim(), answers.dateOfBirth, answers.married, answers.kids, answers.address, answers.phoneNumber);
+        //Create a new friend object with an id of current number of friends + 1
+        const friend = new Friend(friendsArray.length + 1,`${answers.firstName.trim()} ${answers.lastName.trim()}`.trim(), answers.dateOfBirth, answers.married, answers.kids, answers.address, answers.phoneNumber);
         return friend;
     })
     .then( (friend) => {
@@ -176,7 +194,16 @@ function findIt() {
         switch(answer.searchChoice){
             
             case("name"):
-                console.log(friendsArray);
+                inquirer.prompt([
+                    {
+                        type: "input",
+                        message: "Enter your friend's name",
+                        name: "nameQuery"
+                    }
+                ])
+                .then( answer => {
+                    displayArray(friendsArray.filter( friendName => friendName.name.includes(answer.nameQuery.trim())));
+                })
                 break;
         }
     })
@@ -206,11 +233,6 @@ function updateIt() {
     runAgain();
 }
 
-function deleteIt() {
-    console.log("Delete it!");
-    runAgain();
-}
-
 function addToFile(friend) {
     
     // console.log(friend);
@@ -226,8 +248,14 @@ function addToFile(friend) {
     
 }
 
+function deleteIt() {
+    console.log("Delete it!");
+    runAgain();
+}
+
+hello();
 runIt();
-//Create and add a new Friend object
+
 
 //Print new Friend object to file
 

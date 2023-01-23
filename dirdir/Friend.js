@@ -1,5 +1,6 @@
 class Friend {
-    constructor(name, dateOfBirth, married, kids, address, phoneNumber) {
+    constructor(id, name, dateOfBirth, married, kids, address, phoneNumber) {
+        this.id = id;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.married = married;

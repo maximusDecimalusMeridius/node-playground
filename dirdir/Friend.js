@@ -8,41 +8,42 @@ class Friend {
         this.address = address;
         this.phoneNumber = phoneNumber;
     }
+}
 
-    setKids(names) {
+Friend.prototype = {
+    setKids: function(names) {
         names.forEach( name => this.kids.push(name));
-    }
+    },
     
-    setName(name){
+    setName: function(name){
         this.name = name;
-    }
+    },
 
-    getID() {
+    getID: function() {
         return this.id;
-    }
+    },
 
-    getName() {
+    getName: function() {
         return this.name;
-    }
+    },
 
-    getDateofBirth() {
+    getDateofBirth: function() {
         return this.dateOfBirth;
-    }
+    },
 
-    getMarried() {
+    getMarried: function() {
         return this.married;
-    }
+    },
 
-
-    getKids() {
+    getKids: function() {
         return this.kids;
-    }
+    },
 
-    getAddress() {
+    getAddress: function() {
         return this.address;
-    }
+    },
 
-    getPhoneNumber() {
+    getPhoneNumber: function() {
         return this.phoneNumber;
     }
 }

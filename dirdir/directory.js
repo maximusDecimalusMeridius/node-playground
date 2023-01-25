@@ -223,11 +223,10 @@ function findIt() {
                     }
                 ])
                 .then( answer => {
-                    
-                    if(friendsArray.every( friend => friend.name != answer.searchQuery)){
-                        console.log(`No friend named ${answer.searchQuery}!`);
+                    if(friendsArray.some( friend => friend.name.includes(answer.searchQuery.toLowerCase()))){
+                        displayArray( friendsArray.filter( friend => friend.name.includes( answer.searchQuery.trim() ) ) );
                     } else {
-                    displayArray( friendsArray.filter( friend => friend.name.includes( answer.searchQuery.trim() ) ) );
+                        console.log(`No friend named ${answer.searchQuery}!`);
                     }
                 })
                 .then(() => runAgain())
